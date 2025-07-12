@@ -1,6 +1,15 @@
 p {
-    font-size: 16px;
+    font-size: 32px;
     line-height: 1.5;
     color: #920505;
     margin-bottom: 1em;
+}
+
+body {
+    background-color: #829862;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }

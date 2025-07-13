@@ -7,8 +7,57 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-   <p>hello!! Welcome <br> this is me the only author.</p>
+   <video autoplay muted loop id="bgVideo">
+     <source src="videos/vid1.mp4" type="video/mp4" />
+     Your browser does not support the video tag.
+   </video>
+   <div id="pageTitle">
+     <p class="smallText">This is</p>
+     <h1 class="largeText animatedTitle">THE HICKER's WORLD</h1>
+   </div>
+   <div id="content" style="opacity: 1;">
+     <h2 class="animatedText typewriter">Welcome</h2>
+     <p class="animatedText typewriter">this is me the only author.</p>
+     <button id="goButton" style="opacity: 0;">GO on!!</button>
+   </div>
+   <script>
+     document.getElementById('goButton').addEventListener('click', function() {
+       window.location.href = 'next.html';
+     });
 
+     // Animation sequence
+     const pageTitle = document.getElementById('pageTitle');
+     const content = document.getElementById('content');
+     const animatedTexts = document.querySelectorAll('.animatedText');
+     const goButton = document.getElementById('goButton');
+
+     // After pageTitle animation ends, show content one by one with fadeSlideIn animation
+     pageTitle.addEventListener('animationend', () => {
+       content.style.opacity = 1;
+       let index = 0;
+
+       function showText() {
+         if (index >= animatedTexts.length) {
+           // After all texts animated, fade out button
+           goButton.style.opacity = 1;
+           goButton.style.transition = 'opacity 1s ease';
+           setTimeout(() => {
+             goButton.style.opacity = 0;
+           }, 3000); // fade out after 3 seconds
+           return;
+         }
+         const el = animatedTexts[index];
+         el.style.opacity = 1;
+         el.classList.add('fadeSlideIn');
+         setTimeout(() => {
+           el.classList.remove('fadeSlideIn');
+           index++;
+           showText();
+         }, 1000); // duration of fadeSlideIn animation
+       }
+
+       showText();
+     });
+   </script>
 </body>
 </html>
-

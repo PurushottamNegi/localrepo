@@ -1,15 +1,226 @@
 p {
-    font-size: 32px;
+    font-size: 20px;
+    line-height: 1.0; /* Reduced line spacing */
+    color: #f5f5dc;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 1px 1px 2px #4a4a2a;
+}
+
+h2 {
+    font-size: 25px;
     line-height: 1.5;
-    color: #920505;
-    margin-bottom: 1em;
+    font-weight: bold;
+    color: #f5f5dc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 2px 2px 4px #4a4a2a;
+}
+
+h2 {
+    font-size: 25px;
+    line-height: 1.5; /* Reduced line spacing */
+    font-weight: bold;
+    color: #f5f5dc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 2px 2px 4px #4a4a2a;
 }
 
 body {
     background-color: #829862;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+#bgVideo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+#pageTitle {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    text-align: center;
+    margin-top: 10px;
+    color: #f5f5dc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* Ensure caret is hidden globally */
+* {
+    caret-color: transparent !important;
+}
+
+#pageTitle .smallText {
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.8;
+    pointer-events: auto;
+}
+
+#pageTitle .largeText {
+    font-size: 48px;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.95;
+    animation: entranceAnimation 2s ease forwards;
+    pointer-events: auto;
+}
+
+#pageTitle .smallText {
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+#pageTitle .largeText {
+    font-size: 48px;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.95;
+}
+
+#content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #f5f5dc;
+}
+
+@keyframes entranceAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.8);
+        filter: blur(4px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+p, h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #f5f5dc;
+    /* Remove handwriting animation */
+}
+
+/* Typewriter effect */
+.typewriter {
+    overflow: hidden;
+    border-right: none; /* Remove blinking typing cursor */
+    white-space: nowrap;
+    /* animation: blinkCaret 0.75s step-end infinite; Removed blinking cursor */
+}
+
+@keyframes blinkCaret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #f5f5dc;
+    }
+}
+
+button#goButton {
+    border-right: none;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+}
+
+.animatedText {
+    opacity: 0;
+    transform: translateY(20px);
+    animation-fill-mode: forwards;
+}
+
+.fadeSlideIn {
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+}
+
+/* Hide caret (text cursor) globally */
+* {
+    caret-color: transparent !important;
+}
+
+.animatedText {
+    caret-color: transparent !important;
+}
+
+#goButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #a3b18a;
+    border: none;
+    border-radius: 5px;
+    color: #2f3e46;
+    font-weight: bold;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#goButton:hover {
+    background-color: #6b8e23;
+    color: #f5f5dc;
+    box-shadow: 0 0 12px 3px rgba(107, 142, 35, 0.8);
+}
+
+#audioToggle {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    color: #2f3e46;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+#audioToggle:hover {
+    background-color: rgba(255, 255, 255, 0.4);
 }

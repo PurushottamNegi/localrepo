@@ -1,0 +1,2 @@
+videos/vid2.mp4 filter=lfs diff=lfs merge=lfs -text
+videos/vid3.mp4 filter=lfs diff=lfs merge=lfs -text

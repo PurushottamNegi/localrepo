@@ -11,6 +11,7 @@
      <source src="videos/vid1.mp4" type="video/mp4" />
      Your browser does not support the video tag.
    </video>
+   <button id="loginButton">Login / Sign In</button>
    <div id="pageTitle">
      <p class="smallText">This is</p>
      <h1 class="largeText animatedTitle">THE HICKER's WORLD</h1>
@@ -19,6 +20,58 @@
      <p class="typewriter">WARNING: You're trying to Enter into the hicker's world</p>
      <button id="goButton" style="opacity: 0;">GO on!!</button>
    </div>
+
+   <!-- Login Modal -->
+   <div id="loginModal" class="modal" style="display:none;">
+     <div class="modal-content">
+       <span class="close">&times;</span>
+       <h2>Login / Sign In</h2>
+       <button id="hickerAccountBtn" class="hicker-account">Login with Hicker's Account</button>
+       <button class="social-login google">Login with Gmail</button>
+       <button class="social-login facebook">Login with Facebook</button>
+       <button class="social-login linkedin">Login with LinkedIn</button>       
+     </div>
+   </div>
+
+   <!-- Hicker's Account Login Modal -->
+   <div id="hickerLoginModal" class="modal" style="display:none;">
+     <div class="modal-content">
+       <span class="close" id="hickerClose">&times;</span>
+       <h2>Hicker's Account Login</h2>
+       <form id="hickerLoginForm">
+         <input type="text" id="username" name="username" placeholder="Username or Email" required style="width: 90%; padding: 8px; margin: 10px 0;"/>
+         <input type="password" id="password" name="password" placeholder="Password" required style="width: 90%; padding: 8px; margin: 10px 0;"/>
+         <button type="submit" style="width: 95%; padding: 10px; margin-top: 10px; font-weight: bold; cursor: pointer;">Login</button>
+         <button type="button" id="signupBtn" class="signup-button" style="width: 95%; padding: 10px; margin-top: 10px;">Sign Up</button>
+       </form>
+     </div>
+   </div>
+
+   <!-- Hicker's Account Signup Modal -->
+   <div id="hickerSignupModal" class="modal" style="display:none;">
+     <div class="modal-content">
+       <span class="close" id="signupClose">&times;</span>
+       <h2>Create <br>New Hicker's Account</h2>
+       <form id="hickerSignupForm" style="text-align: left;">
+         <label for="newUsername">Username</label><br/>
+         <input type="text" id="newUsername" name="newUsername" placeholder="Enter username" required style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <label for="newEmail">Email</label><br/>
+         <input type="email" id="newEmail" name="newEmail" placeholder="Enter email" required style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <label for="mobileNumber">Mobile Number</label><br/>
+         <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter mobile number" required style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <button type="button" id="sendOtpBtn" style="width: 100%; padding: 10px; margin-bottom: 15px; font-weight: bold; cursor: pointer;">Send OTP</button><br/>
+         <label for="otp">Enter OTP</label><br/>
+         <input type="text" id="otp" name="otp" placeholder="Enter OTP" disabled style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <button type="button" id="verifyOtpBtn" disabled style="width: 100%; padding: 10px; margin-bottom: 15px; font-weight: bold; cursor: pointer;">Verify OTP</button><br/>
+         <label for="newPassword">Password</label><br/>
+         <input type="password" id="newPassword" name="newPassword" placeholder="Enter password" required style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <label for="confirmPassword">Confirm Password</label><br/>
+         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required style="width: 100%; padding: 8px; margin: 5px 0 15px 0;"/><br/>
+         <button type="submit" style="width: 100%; padding: 10px; font-weight: bold; cursor: pointer;">Create Account</button>
+       </form>
+     </div>
+   </div>
+
    <script>
      document.getElementById('goButton').addEventListener('click', function() {
        window.location.href = 'next.html';
@@ -44,6 +97,67 @@
          goButton.style.transition = 'opacity 1s ease';
        }
      }, 5000);
+
+     // Modal functionality
+     const loginButton = document.getElementById('loginButton');
+     const loginModal = document.getElementById('loginModal');
+     const closeModal = document.querySelector('#loginModal .close');
+
+     const hickerAccountBtn = document.getElementById('hickerAccountBtn');
+     const hickerLoginModal = document.getElementById('hickerLoginModal');
+     const hickerClose = document.getElementById('hickerClose');
+
+     loginButton.onclick = function() {
+       loginModal.style.display = 'block';
+     }
+
+     closeModal.onclick = function() {
+       loginModal.style.display = 'none';
+     }
+
+     hickerAccountBtn.onclick = function() {
+       loginModal.style.display = 'none';
+       hickerLoginModal.style.display = 'block';
+     }
+
+     hickerClose.onclick = function() {
+       hickerLoginModal.style.display = 'none';
+     }
+
+     window.onclick = function(event) {
+       if (event.target == loginModal) {
+         loginModal.style.display = 'none';
+       }
+       if (event.target == hickerLoginModal) {
+         hickerLoginModal.style.display = 'none';
+     }
+     
+     // Open signup modal from login modal
+     const signupBtn = document.getElementById('signupBtn');
+     const hickerSignupModal = document.getElementById('hickerSignupModal');
+     const signupClose = document.getElementById('signupClose');
+
+     signupBtn.onclick = function() {
+       hickerLoginModal.style.display = 'none';
+       hickerSignupModal.style.display = 'block';
+     }
+
+     signupClose.onclick = function() {
+       hickerSignupModal.style.display = 'none';
+     }
+
+     window.onclick = function(event) {
+       if (event.target == loginModal) {
+         loginModal.style.display = 'none';
+       }
+       if (event.target == hickerLoginModal) {
+         hickerLoginModal.style.display = 'none';
+       }
+       if (event.target == hickerSignupModal) {
+         hickerSignupModal.style.display = 'none';
+       }
+     }
+   }
    </script>
 </body>
 </html>

@@ -16,8 +16,7 @@
      <h1 class="largeText animatedTitle">THE HICKER's WORLD</h1>
    </div>
    <div id="content" style="opacity: 1;">
-     <h2 class="animatedText typewriter">Warning!!</h2>
-     <p class="animatedText typewriter">You're trying to Enter into the hicker's world</p>
+     <p class="typewriter">WARNING: You're trying to Enter into the hicker's world</p>
      <button id="goButton" style="opacity: 0;">GO on!!</button>
    </div>
    <script>
@@ -28,36 +27,23 @@
      // Animation sequence
      const pageTitle = document.getElementById('pageTitle');
      const content = document.getElementById('content');
-     const animatedTexts = document.querySelectorAll('.animatedText');
      const goButton = document.getElementById('goButton');
 
-     // After pageTitle animation ends, show content one by one with fadeSlideIn animation
+     // Show button after pageTitle animation ends
      pageTitle.addEventListener('animationend', () => {
        content.style.opacity = 1;
-       let index = 0;
-
-       function showText() {
-         if (index >= animatedTexts.length) {
-           // After all texts animated, fade out button
-           goButton.style.opacity = 1;
-           goButton.style.transition = 'opacity 1s ease';
-           setTimeout(() => {
-             goButton.style.opacity = 0;
-           }, 3000); // fade out after 3 seconds
-           return;
-         }
-         const el = animatedTexts[index];
-         el.style.opacity = 1;
-         el.classList.add('fadeSlideIn');
-         setTimeout(() => {
-           el.classList.remove('fadeSlideIn');
-           index++;
-           showText();
-         }, 1000); // duration of fadeSlideIn animation
-       }
-
-       showText();
+       goButton.style.opacity = 1;
+       goButton.style.transition = 'opacity 1s ease';
      });
+
+     // Fallback: if animationend does not fire within 5 seconds, show button anyway
+     setTimeout(() => {
+       if (content.style.opacity !== '1') {
+         content.style.opacity = 1;
+         goButton.style.opacity = 1;
+         goButton.style.transition = 'opacity 1s ease';
+       }
+     }, 5000);
    </script>
 </body>
 </html>

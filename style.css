@@ -1,6 +1,6 @@
 p {
-    font-size: 20px;
-    line-height: 1.0; /* Reduced line spacing */
+    font-size: 15px;
+    line-height: 2.5; /* Reduced line spacing */
     color: #f5f5dc;
     margin-bottom: 15px;
     font-weight: bold;
@@ -8,23 +8,7 @@ p {
     text-shadow: 1px 1px 2px #4a4a2a;
 }
 
-h2 {
-    font-size: 25px;
-    line-height: 1.5;
-    font-weight: bold;
-    color: #f5f5dc;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-shadow: 2px 2px 4px #4a4a2a;
-}
 
-h2 {
-    font-size: 25px;
-    line-height: 2.5; /* Reduced line spacing */
-    font-weight: bold;
-    color: #f5f5dc;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-shadow: 2px 2px 4px #4a4a2a;
-}
 
 body {
     background-color: #829862;
@@ -63,9 +47,14 @@ body {
     pointer-events: none;
 }
 
-/* Ensure caret is hidden globally */
+/* Remove caret (text cursor) globally */
 * {
     caret-color: transparent !important;
+    outline: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important; /* Safari support */
+    -moz-user-select: none !important; /* Firefox support */
+    -ms-user-select: none !important; /* IE10+ support */
 }
 
 #pageTitle .smallText {
@@ -129,17 +118,26 @@ p, h2 {
     /* Remove handwriting animation */
 }
 
-/* Typewriter effect */
+/* Typing effect without blinking cursor */
 .typewriter {
     overflow: hidden;
-    border-right: none; /* Remove blinking typing cursor */
     white-space: nowrap;
-    /* animation: blinkCaret 0.75s step-end infinite; Removed blinking cursor */
+    border-right: none; /* No blinking cursor */
+    animation: typing 3s steps(30, end) forwards;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
 }
 
 @keyframes blinkCaret {
     from, to {
-        border-color: transparent;
+        border-color: hidden;
     }
     50% {
         border-color: #f5f5dc;
@@ -170,7 +168,7 @@ button#goButton {
 
 .fadeSlideIn {
     animation-name: fadeIn;
-    animation-duration: 1s;
+    animation-duration: 3s;
     animation-timing-function: ease-out;
 }
 

@@ -58,7 +58,7 @@ body {
 }
 
 .modal-content {
-  background-color: rgba(254, 254, 254, 0.85); /* Slightly transparent for fader effect */
+  background-color:  rgba(245, 242, 249, 0.952); /* Slightly transparent for fader effect */
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;
   border: 1px solid #888;

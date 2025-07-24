@@ -1,17 +1,6 @@
-p {
-    font-size: 15px;
-    line-height: 2.5; /* Reduced line spacing */
-    color: #f5f5dc;
-    margin-bottom: 15px;
-    font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-shadow: 1px 1px 2px #4a4a2a;
-}
-
-
-
+/* --- Global & Typography --- */
 body {
-    background-color: #829862;
+    background-color: #3d4a34;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,19 +9,39 @@ body {
     margin: 0;
     position: relative;
     overflow: hidden;
+    color: #f5f5dc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 500;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    outline: none;
+}
+
+/* --- Background Video --- */
 #bgVideo {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     z-index: -1;
+    filter: brightness(0.7);
 }
 
+/* --- Page Title & Content --- */
 #pageTitle {
     position: fixed;
     top: 30px;
@@ -40,185 +49,243 @@ body {
     transform: translateX(-50%);
     z-index: 2;
     text-align: center;
-    margin-top: 10px;
-    color: #f5f5dc;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 100%;
-    pointer-events: none;
-}
-
-/* Remove caret (text cursor) globally */
-* {
-    caret-color: transparent !important;
-    outline: none !important;
-    user-select: none !important;
-    -webkit-user-select: none !important; /* Safari support */
-    -moz-user-select: none !important; /* Firefox support */
-    -ms-user-select: none !important; /* IE10+ support */
 }
 
 #pageTitle .smallText {
-    font-size: 18px;
-    margin: 0;
-    opacity: 0.8;
-    pointer-events: auto;
-}
-
-#pageTitle .largeText {
-    font-size: 48px;
-    margin: 0;
-    font-weight: bold;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.95;
-    animation: entranceAnimation 2s ease forwards;
-    pointer-events: auto;
-}
-
-#pageTitle .smallText {
-    font-size: 18px;
-    margin: 0;
+    font-size: 1.2rem;
     opacity: 0.8;
 }
 
 #pageTitle .largeText {
-    font-size: 48px;
+    font-size: 3rem;
     margin: 0;
     font-weight: bold;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    opacity: 0.95;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
 }
 
-#content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: #f5f5dc;
+.animatedTitle {
+    animation: entranceAnimation 2s ease-out forwards;
 }
 
 @keyframes entranceAnimation {
-    0% {
+    from {
         opacity: 0;
-        transform: translateY(-50px) scale(0.8);
-        filter: blur(4px);
+        transform: translateY(-40px) scale(0.9);
+        filter: blur(5px);
     }
-    100% {
+    to {
         opacity: 1;
         transform: translateY(0) scale(1);
         filter: blur(0);
     }
 }
 
-p, h2 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 2px solid #f5f5dc;
-    /* Remove handwriting animation */
+#content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
 }
 
-/* Typing effect without blinking cursor */
+/* --- Original Typewriter Animation --- */
 .typewriter {
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: none; /* No blinking cursor */
-    animation: typing 3s steps(30, end) forwards;
+    overflow: hidden; 
+    white-space: nowrap; 
+    border-right: 2px solid #f5f5dc;
+    animation: typing 3s steps(40, end), blinkCaret .75s step-end infinite;
 }
 
 @keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
+    from { width: 0 }
+    to { width: 100% }
 }
 
 @keyframes blinkCaret {
-    from, to {
-        border-color: hidden;
-    }
-    50% {
-        border-color: #f5f5dc;
-    }
+    from, to { border-color: transparent }
+    50% { border-color: #f5f5dc; }
 }
 
-button#goButton {
-    border-right: none;
-    opacity: 1;
-}
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(10px);
-    }
-}
-
-.animatedText {
-    opacity: 0;
-    transform: translateY(20px);
-    animation-fill-mode: forwards;
-}
-
-.fadeSlideIn {
-    animation-name: fadeIn;
-    animation-duration: 3s;
-    animation-timing-function: ease-out;
-}
-
-/* Hide caret (text cursor) globally */
-* {
-    caret-color: transparent !important;
-}
-
-.animatedText {
-    caret-color: transparent !important;
-}
-
-#goButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 20px;
+/* --- Buttons --- */
+button {
     cursor: pointer;
-    background-color: #a3b18a;
+    font-weight: bold;
     border: none;
     border-radius: 5px;
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+#loginButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(163, 177, 138, 0.4);
+    color: #f0f0f0;
+    z-index: 1000;
+}
+
+#loginButton:hover {
+    background-color: rgba(35, 69, 142, 0.9);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(50, 100, 200, 0.8);
+}
+
+/* --- Original "GO on!!" Button Animation --- */
+#goButton {
+    margin-top: 20px;
+    background-color: #a3b18a;
     color: #2f3e46;
-    font-weight: bold;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    font-size: 1.2rem;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 1s ease; /* Fade-in transition */
 }
 
 #goButton:hover {
-    background-color: #6b8e23;
-    color: #f5f5dc;
-    box-shadow: 0 0 12px 3px rgba(107, 142, 35, 0.8);
+    background-color: #8f9e73;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(163, 177, 138, 0.9);
 }
 
 #audioToggle {
     position: fixed;
-    bottom: 15px;
-    right: 15px;
+    bottom: 20px;
+    right: 20px;
     background-color: rgba(255, 255, 255, 0.2);
-    border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    color: #2f3e46;
-    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s ease;
     z-index: 10;
 }
 
 #audioToggle:hover {
     background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Modal Styles (Unchanged) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: rgba(240, 240, 240, 0.95);
+    color: #333;
+    margin: 15vh auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 380px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Social & Hicker Buttons */
+.social-login, .hicker-account {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.social-login:hover, .hicker-account:hover {
+    filter: brightness(90%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.social-login.google { background-color: #db4437; }
+.social-login.facebook { background-color: #3b5998; }
+.social-login.linkedin { background-color: #0077b5; }
+
+.hicker-account {
+    border: 2px solid #627a98;
+    background-color: transparent;
+    color: #3e5066;
+}
+
+.hicker-account:hover {
+    background-color: #627a98;
+    color: white;
+}
+
+/* Hicker Login/Signup Specifics */
+#hickerLoginModal .modal-content, #hickerSignupModal .modal-content {
+    background: linear-gradient(135deg, #e0e0e0, #f7f7f7);
+    color: #333;
+    text-align: left;
+}
+
+#hickerLoginModal form, #hickerSignupForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#hickerLoginModal input, #hickerSignupForm input {
+    padding: 12px;
+    margin: 8px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#hickerLoginModal button, #hickerSignupForm button {
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #56ab2f;
+    color: white;
+}
+
+#hickerLoginModal button:hover, #hickerSignupForm button:hover {
+    background-color: #4a9327;
+}
+
+#hickerSignupForm label {
+    margin-bottom: 2px;
+    font-weight: bold;
 }

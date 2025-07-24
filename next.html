@@ -11,6 +11,114 @@
         <source src="videos/vid2.mp4" type="video/mp4" />
         Your browser does not support the video tag.
     </video>
+
+    <audio id="pageAudio" src="audio/prtmov.mp3" loop></audio>
+    <audio id="buttonSound" src="audio/but.mp3"></audio>
     
+    <button id="audioToggle">🔊</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pageAudio = document.getElementById('pageAudio');
+            const audioToggle = document.getElementById('audioToggle');
+            const buttonSound = document.getElementById('buttonSound');
+            const bgVideo = document.getElementById('bgVideo');
+            let isAudioPlaying = false;
+            let wasAudioPlayingBeforeVideoPause = false;
+
+            // Lower the volume of main audio
+            pageAudio.volume = 0.3;
+            
+            const togglePageAudio = () => {
+                 if (isAudioPlaying) {
+                    pageAudio.pause();
+                    audioToggle.textContent = '🔇';
+                } else {
+                    pageAudio.play().catch(e => console.error("Audio failed:", e));
+                    audioToggle.textContent = '🔊';
+                }
+                isAudioPlaying = !isAudioPlaying;
+            };
+
+            // Autoplay main audio on page load, handle autoplay restrictions
+            pageAudio.play().then(() => {
+                isAudioPlaying = true;
+                audioToggle.textContent = '🔊';
+            }).catch(e => {
+                console.log("Autoplay prevented, waiting for user interaction.");
+                // One-time event to enable audio after the first user click.
+                const enableAudio = () => {
+                    if (!isAudioPlaying) {
+                        togglePageAudio();
+                    }
+                    document.body.removeEventListener('click', enableAudio);
+                };
+                document.body.addEventListener('click', enableAudio);
+            });
+
+            // Synchronize audio with background video playback
+            bgVideo.addEventListener('pause', () => {
+                if (isAudioPlaying) {
+                    wasAudioPlayingBeforeVideoPause = true;
+                    pageAudio.pause();
+                    audioToggle.textContent = '🔇';
+                    isAudioPlaying = false;
+                }
+            });
+            bgVideo.addEventListener('ended', () => {
+                if (isAudioPlaying) {
+                    wasAudioPlayingBeforeVideoPause = true;
+                    pageAudio.pause();
+                    audioToggle.textContent = '🔇';
+                    isAudioPlaying = false;
+                }
+            });
+            bgVideo.addEventListener('play', () => {
+                if (wasAudioPlayingBeforeVideoPause) {
+                    pageAudio.play().catch(e => console.error("Audio failed:", e));
+                    audioToggle.textContent = '🔊';
+                    isAudioPlaying = true;
+                    wasAudioPlayingBeforeVideoPause = false;
+                }
+            });
+            bgVideo.addEventListener('error', () => {
+                if (isAudioPlaying) {
+                    wasAudioPlayingBeforeVideoPause = true;
+                    pageAudio.pause();
+                    audioToggle.textContent = '🔇';
+                    isAudioPlaying = false;
+                }
+            });
+
+            // Detect video loop restart and restart audio
+            let lastTime = 0;
+            bgVideo.addEventListener('timeupdate', () => {
+                if (bgVideo.currentTime < lastTime) {
+                    // Video looped back to start
+                    if (isAudioPlaying) {
+                        pageAudio.currentTime = 0;
+                        pageAudio.play().catch(e => console.error("Audio failed to play on loop:", e));
+                    }
+                }
+                lastTime = bgVideo.currentTime;
+            });
+
+            audioToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePageAudio();
+            });
+
+            // Play button sound on all buttons except audio toggle
+            const allButtons = document.querySelectorAll('button');
+            allButtons.forEach(button => {
+                if(button.id !== 'audioToggle') {
+                    button.addEventListener('click', () => {
+                        buttonSound.currentTime = 0;
+                        buttonSound.play().catch(e => console.error("Button sound failed to play:", e));
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hicker's Web Page</title>
+    <title>Hicker's World</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,39 +11,211 @@
      <source src="videos/vid1.mp4" type="video/mp4" />
      Your browser does not support the video tag.
    </video>
+
+   <audio id="mainAudio" src="audio/main.mp3" loop></audio>
+   <audio id="buttonSound" src="audio/but.mp3"></audio>
+
+   <button id="loginButton">Login / Sign In</button>
+   <button id="audioToggle">🔊</button>
+
    <div id="pageTitle">
      <p class="smallText">This is</p>
      <h1 class="largeText animatedTitle">THE HICKER's WORLD</h1>
    </div>
-   <div id="content" style="opacity: 1;">
-     <p class="typewriter">WARNING: You're trying to Enter into the hicker's world</p>
-     <button id="goButton" style="opacity: 0;">GO on!!</button>
+
+   <div id="content">
+     <p id="warningText" class="typewriter">WARNING: You're trying to Enter into the hicker's world</p>
+     <button id="goButton">GO on!!</button>
    </div>
+
+   <div id="loginModal" class="modal">
+     <div class="modal-content">
+       <span class="close-btn">&times;</span>
+       <h2>Login / Sign In</h2>
+       <button id="hickerAccountBtn" class="hicker-account">Login with Hicker's Account</button>
+       <button class="social-login google">Login with Gmail</button>
+       <button class="social-login facebook">Login with Facebook</button>
+       <button class="social-login linkedin">Login with LinkedIn</button>
+     </div>
+   </div>
+   <div id="hickerLoginModal" class="modal">
+     <div class="modal-content">
+       <span class="close-btn">&times;</span>
+       <h2>Hicker's Account Login</h2>
+       <form id="hickerLoginForm">
+         <input type="text" id="username" name="username" placeholder="Username or Email" required />
+         <input type="password" id="password" name="password" placeholder="Password" required />
+         <button type="submit">Login</button>
+         <button type="button" id="signupBtn">Sign Up</button>
+       </form>
+     </div>
+   </div>
+   <div id="hickerSignupModal" class="modal">
+     <div class="modal-content">
+       <span class="close-btn">&times;</span>
+       <h2>Create New Hicker's Account</h2>
+       <form id="hickerSignupForm">
+         <label for="newUsername">Username</label>
+         <input type="text" id="newUsername" name="newUsername" placeholder="Enter username" required />
+         <label for="newEmail">Email</label>
+         <input type="email" id="newEmail" name="newEmail" placeholder="Enter email" required />
+         <label for="mobileNumber">Mobile Number</label>
+         <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter mobile number" required />
+         <button type="button" id="sendOtpBtn">Send OTP</button>
+         <label for="otp">Enter OTP</label>
+         <input type="text" id="otp" name="otp" placeholder="Enter OTP" disabled />
+         <button type="button" id="verifyOtpBtn" disabled>Verify OTP</button>
+         <label for="newPassword">Password</label>
+         <input type="password" id="newPassword" name="newPassword" placeholder="Enter password" required />
+         <label for="confirmPassword">Confirm Password</label>
+         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
+         <button type="submit">Create Account</button>
+       </form>
+     </div>
+   </div>
+
    <script>
-     document.getElementById('goButton').addEventListener('click', function() {
-       window.location.href = 'next.html';
-     });
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Elements ---
+        const goButton = document.getElementById('goButton');
+        const mainAudio = document.getElementById('mainAudio');
+        const buttonSound = document.getElementById('buttonSound');
+        const audioToggle = document.getElementById('audioToggle');
+        const allButtons = document.querySelectorAll('button');
+        const modals = document.querySelectorAll('.modal');
+        const warningText = document.getElementById('warningText');
+        const bgVideo = document.getElementById('bgVideo');
 
-     // Animation sequence
-     const pageTitle = document.getElementById('pageTitle');
-     const content = document.getElementById('content');
-     const goButton = document.getElementById('goButton');
+        // --- Audio Playback ---
+        let isAudioPlaying = false;
+        let wasAudioPlayingBeforeVideoPause = false;
 
-     // Show button after pageTitle animation ends
-     pageTitle.addEventListener('animationend', () => {
-       content.style.opacity = 1;
-       goButton.style.opacity = 1;
-       goButton.style.transition = 'opacity 1s ease';
-     });
+        // Lower the volume of main audio
+        mainAudio.volume = 0.3;
 
-     // Fallback: if animationend does not fire within 5 seconds, show button anyway
-     setTimeout(() => {
-       if (content.style.opacity !== '1') {
-         content.style.opacity = 1;
-         goButton.style.opacity = 1;
-         goButton.style.transition = 'opacity 1s ease';
-       }
-     }, 5000);
+        const playButtonSound = () => {
+            buttonSound.currentTime = 0;
+            buttonSound.play().catch(e => console.error("Button sound failed to play:", e));
+        };
+        
+        const toggleMainAudio = () => {
+            if (isAudioPlaying) {
+                mainAudio.pause();
+                audioToggle.textContent = '🔇';
+            } else {
+                mainAudio.play().catch(e => console.error("Background audio failed to play:", e));
+                audioToggle.textContent = '🔊';
+            }
+            isAudioPlaying = !isAudioPlaying;
+        };
+        
+        // Autoplay main audio on page load, handle autoplay restrictions
+        mainAudio.play().then(() => {
+            isAudioPlaying = true;
+            audioToggle.textContent = '🔊';
+        }).catch(e => {
+            console.log("Autoplay prevented, waiting for user interaction.");
+            // One-time event to enable audio after the first user click.
+            const enableAudio = () => {
+                if (!isAudioPlaying) {
+                    toggleMainAudio();
+                }
+                document.body.removeEventListener('click', enableAudio);
+            };
+            document.body.addEventListener('click', enableAudio);
+        });
+
+        // Synchronize audio with background video playback
+        bgVideo.addEventListener('pause', () => {
+            if (isAudioPlaying) {
+                wasAudioPlayingBeforeVideoPause = true;
+                mainAudio.pause();
+                audioToggle.textContent = '🔇';
+                isAudioPlaying = false;
+            }
+        });
+        bgVideo.addEventListener('ended', () => {
+            if (isAudioPlaying) {
+                wasAudioPlayingBeforeVideoPause = true;
+                mainAudio.pause();
+                audioToggle.textContent = '🔇';
+                isAudioPlaying = false;
+            }
+        });
+        bgVideo.addEventListener('play', () => {
+            if (wasAudioPlayingBeforeVideoPause) {
+                mainAudio.play().catch(e => console.error("Background audio failed to play:", e));
+                audioToggle.textContent = '🔊';
+                isAudioPlaying = true;
+                wasAudioPlayingBeforeVideoPause = false;
+            }
+        });
+        bgVideo.addEventListener('error', () => {
+            if (isAudioPlaying) {
+                wasAudioPlayingBeforeVideoPause = true;
+                mainAudio.pause();
+                audioToggle.textContent = '🔇';
+                isAudioPlaying = false;
+            }
+        });
+
+        // Detect video loop restart and restart audio
+        let lastTime = 0;
+        bgVideo.addEventListener('timeupdate', () => {
+            if (bgVideo.currentTime < lastTime) {
+                // Video looped back to start
+                if (isAudioPlaying) {
+                    mainAudio.currentTime = 0;
+                    mainAudio.play().catch(e => console.error("Background audio failed to play on loop:", e));
+                }
+            }
+            lastTime = bgVideo.currentTime;
+        });
+
+        // --- Event Listeners ---
+        goButton.addEventListener('click', () => {
+            window.location.href = 'next.html';
+        });
+
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the body's one-time click listener from firing.
+            toggleMainAudio();
+        });
+
+        allButtons.forEach(button => {
+            // Add sound to all buttons except the audio toggle, which has its own logic
+            if(button.id !== 'audioToggle') {
+                button.addEventListener('click', playButtonSound);
+            }
+        });
+
+        // --- Modal Logic ---
+        const openModal = (modalId) => document.getElementById(modalId).style.display = 'block';
+        const closeModal = (modal) => modal.style.display = 'none';
+
+        document.getElementById('loginButton').addEventListener('click', () => openModal('loginModal'));
+        document.getElementById('hickerAccountBtn').addEventListener('click', () => {
+            closeModal(document.getElementById('loginModal'));
+            openModal('hickerLoginModal');
+        });
+        document.getElementById('signupBtn').addEventListener('click', () => {
+            closeModal(document.getElementById('hickerLoginModal'));
+            openModal('hickerSignupModal');
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal || event.target.classList.contains('close-btn')) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        // --- Restored Animation Logic ---
+        warningText.addEventListener('animationend', () => {
+           goButton.style.opacity = '1';
+        });
+    });
    </script>
 </body>
 </html>
